@@ -1,5 +1,6 @@
 package com.example.cv2
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +50,7 @@ fun CompletionScreenContent(
     concentrationRate: String,
     certificationStatus: String
 ) {
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -115,15 +118,35 @@ fun CompletionScreenContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = "공유하기",
-                fontSize = 14.sp,
-                color = Color.Black,
-                modifier = Modifier.align(Alignment.End)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(onClick = {
+                    shareViaEmail(context, completionDate, progressRate, concentrationRate, certificationStatus)
+                }) {
+                    Text(text = "이메일로 공유하기")
+                }
+            }
         }
     }
 }
+
+fun shareViaEmail(context: android.content.Context, completionDate: String, progressRate: String, concentrationRate: String, certificationStatus: String) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "message/rfc822"
+        putExtra(Intent.EXTRA_SUBJECT, "교육 수료 결과")
+        putExtra(Intent.EXTRA_TEXT, """
+            수강 완료 날짜: $completionDate
+            진도율: $progressRate
+            집중도: $concentrationRate
+            수료 여부: $certificationStatus
+        """.trimIndent())
+    }
+    context.startActivity(Intent.createChooser(intent, "이메일로 공유하기"))
+}
+
 @Composable
 fun InfoBox(label: String, value: String) {
     Box(
