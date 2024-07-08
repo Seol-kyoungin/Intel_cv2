@@ -1,0 +1,197 @@
+package com.example.cv2
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.cv2.ui.theme.CV2Theme
+
+class EducationVideoScreen : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            CV2Theme {
+                Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFF5F5F5)) {
+                    EducationVideoScreenContent()
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EducationVideoScreenContent() {
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = "법적 필수 교육이란?") },
+            text = { Text(text = "5인 이상 사업장의 모든 근로자가\n" +
+                    "매 반기 6~12시간 반드시 이수해야 하는 법정의무교육 입니다.\n" +
+                    "\n" +
+                    "\n" +
+                    "“산업안전보건법” 제 175조에 따라 \n" +
+                    "매 반기 이수하지 않을 시 최대 500만 이하의 과태료가 부과됩니다.") },
+            confirmButton = {
+                Button(
+                    onClick = { showDialog = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1F41BB))
+                ) {
+                    Text("확인")
+                }
+            }
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.bg),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(150.dp))
+
+            Text(
+                text = "교육 영상",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1F41BB)
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "안녕하세요 경인님,\n오늘 수강하실 법적 의무 교육 안전 보건 교육 영상입니다.",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "법적필수 교육이란?",
+                fontSize = 14.sp,
+                color = Color.Gray,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .clickable { showDialog = true }
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                VideoListItem(
+                    title = "안전 보건 교육 영상",
+                    imageRes = R.drawable.thumbnail
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                VideoListItem(
+                    title = "중대 재해 처벌법 교육 영상",
+                    imageRes = R.drawable.thumbnail
+                )
+            }
+
+
+
+            //테스트
+            val context = LocalContext.current
+            Button(
+                onClick = {
+                    val intent = Intent(context, VideoScreen::class.java)
+                    context.startActivity(intent)
+                },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .height(40.dp),
+                shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1F41BB))
+            ) {
+                Text(
+                    text = "테스트",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+}
+
+@Composable
+fun VideoListItem(title: String, imageRes: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White, RoundedCornerShape(8.dp))
+            .padding(16.dp)
+    ) {
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(RoundedCornerShape(8.dp))
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            color = Color.Black,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EducationVideoScreenPreview() {
+    CV2Theme {
+        EducationVideoScreenContent()
+    }
+}
