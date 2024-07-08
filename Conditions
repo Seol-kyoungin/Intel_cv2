@@ -45,6 +45,10 @@ class Conditions : ComponentActivity() {
         var term3Checked by remember { mutableStateOf(false) }
         var term4Checked by remember { mutableStateOf(false) }
 
+        LaunchedEffect(term1Checked, term2Checked, term3Checked, term4Checked) {
+            allChecked = term1Checked && term2Checked && term3Checked && term4Checked
+        }
+
         fun onAllCheckedChange(checked: Boolean) {
             allChecked = checked
             term1Checked = checked
@@ -52,6 +56,7 @@ class Conditions : ComponentActivity() {
             term3Checked = checked
             term4Checked = checked
         }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -157,8 +162,10 @@ class Conditions : ComponentActivity() {
                 //테스트
                 val context = LocalContext.current
                 Button(
-                    onClick = { val intent = Intent(context, EducationVideoScreen::class.java)
-                        context.startActivity(intent)},
+                    onClick = {
+                        val intent = Intent(context, EducationVideoScreen::class.java)
+                        context.startActivity(intent)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
@@ -170,7 +177,6 @@ class Conditions : ComponentActivity() {
             }
         }
     }
-
 
     @Preview(showBackground = true)
     @Composable
