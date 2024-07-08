@@ -111,39 +111,35 @@ fun GuideScreenContent() {
                 }
             }
 
+            Spacer(modifier = Modifier.height(50.dp))
 
-
-
-            //테스트
+            // "확인 완료" 버튼
             val context = LocalContext.current
             Button(
                 onClick = {
-                    val intent = Intent(context, EyeRecognitionScreen::class.java)
+                    val intent = Intent(context, Focusing::class.java)
                     context.startActivity(intent)
                 },
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .height(40.dp),
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1F41BB))
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1F41BB),
+                    contentColor = Color.White
+                )
             ) {
                 Text(
-                    text = "테스트",
-                    color = Color.White,
-                    fontSize = 14.sp,
+                    text = "확인 완료",
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-
-
-
-
-
-
-
         }
     }
 }
+
 
 @Composable
 fun GuideItem(number: Int, text: String) {
