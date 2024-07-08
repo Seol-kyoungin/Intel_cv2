@@ -6,8 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -44,6 +42,7 @@ class Conditions : ComponentActivity() {
         var term2Checked by remember { mutableStateOf(false) }
         var term3Checked by remember { mutableStateOf(false) }
         var term4Checked by remember { mutableStateOf(false) }
+        var showDialog by remember { mutableStateOf(false) }
 
         LaunchedEffect(term1Checked, term2Checked, term3Checked, term4Checked) {
             allChecked = term1Checked && term2Checked && term3Checked && term4Checked
@@ -163,8 +162,12 @@ class Conditions : ComponentActivity() {
                 val context = LocalContext.current
                 Button(
                     onClick = {
-                        val intent = Intent(context, EducationVideoScreen::class.java)
-                        context.startActivity(intent)
+                        if (term1Checked && term2Checked && term3Checked) {
+                            val intent = Intent(context, EducationVideoScreen::class.java)
+                            context.startActivity(intent)
+                        } else {
+                            showDialog = true
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -173,6 +176,21 @@ class Conditions : ComponentActivity() {
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
                 ) {
                     Text(text = "동의하고 계속하기", color = Color.White)
+                }
+
+                if (showDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text(text = "필수 동의 체크해주세요.") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog = false },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1F41BB))
+                            ) {
+                                Text("확인")
+                            }
+                        }
+                    )
                 }
             }
         }
