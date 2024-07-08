@@ -48,12 +48,7 @@ fun EducationVideoScreenContent() {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = { Text(text = "법적 필수 교육이란?") },
-            text = { Text(text = "5인 이상 사업장의 모든 근로자가\n" +
-                    "매 반기 6~12시간 반드시 이수해야 하는 법정의무교육 입니다.\n" +
-                    "\n" +
-                    "\n" +
-                    "“산업안전보건법” 제 175조에 따라 \n" +
-                    "매 반기 이수하지 않을 시 최대 500만 이하의 과태료가 부과됩니다.") },
+            text = { Text(text = "5인 이상 사업장의 모든 근로자가\n매 반기 6~12시간 반드시 이수해야 하는 법정의무교육 입니다.\n\n“산업안전보건법” 제 175조에 따라 \n매 반기 이수하지 않을 시 최대 500만 이하의 과태료가 부과됩니다.") },
             confirmButton = {
                 Button(
                     onClick = { showDialog = false },
@@ -100,76 +95,56 @@ fun EducationVideoScreenContent() {
                 textAlign = TextAlign.Center
             )
 
-            Text(
-                text = "법적필수 교육이란?",
-                fontSize = 14.sp,
-                color = Color.Gray,
+            Row(
                 modifier = Modifier
-                    .padding(top = 8.dp)
-                    .clickable { showDialog = true }
-            )
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = "법적필수 교육이란?",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.clickable { showDialog = true }
+                )
+            }
 
             Spacer(modifier = Modifier.height(30.dp))
 
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                val context = LocalContext.current
                 VideoListItem(
                     title = "안전 보건 교육 영상",
-                    imageRes = R.drawable.thumbnail
+                    imageRes = R.drawable.thumbnail,
+                    onClick = {
+                        val intent = Intent(context, VideoScreen::class.java)
+                        context.startActivity(intent)
+                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 VideoListItem(
                     title = "중대 재해 처벌법 교육 영상",
-                    imageRes = R.drawable.thumbnail
+                    imageRes = R.drawable.thumbnail,
+                    onClick = {
+                        val intent = Intent(context, VideoScreen::class.java)
+                        context.startActivity(intent)
+                    }
                 )
             }
-
-
-
-            //테스트
-            val context = LocalContext.current
-            Button(
-                onClick = {
-                    val intent = Intent(context, VideoScreen::class.java)
-                    context.startActivity(intent)
-                },
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .height(40.dp),
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1F41BB))
-            ) {
-                Text(
-                    text = "테스트",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-
-
-
-
-
-
-
-
-
-
-
         }
     }
 }
 
 @Composable
-fun VideoListItem(title: String, imageRes: Int) {
+fun VideoListItem(title: String, imageRes: Int, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White, RoundedCornerShape(8.dp))
             .padding(16.dp)
+            .clickable(onClick = onClick)
     ) {
         Image(
             painter = painterResource(id = imageRes),
